@@ -20,6 +20,9 @@
 
 #define SAMPLE_PER_SYMBOL 64
 
+#define ENABLE_MODULATION 1
+#define DISABLE_MODULATION 0
+
 #define NO_UART 0
 #define USING_UART 1
 
@@ -70,6 +73,9 @@ private:
 		3927,3958,3987,4013,4037,4058,4078,4095
 	};
 
+	//TODO : Modulation is enabled at start (for debugging)
+	bool EnableModulation = ENABLE_MODULATION;
+
 	struct PeripheralTypeDef {
 		TIM_HandleTypeDef *htim;
 		DAC_HandleTypeDef *hdac;
@@ -101,6 +107,9 @@ public:
 
 	void SetPulseRising(void);
 	void SetPulseFalling(void);
+
+	void StartModulate(void);
+	void StopModulate(void);
 
 	virtual ~AnalogGMSK();
 };

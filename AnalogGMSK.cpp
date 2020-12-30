@@ -9,8 +9,11 @@
 
 AnalogGMSK::AnalogGMSK() {
 	// TODO Auto-generated constructor stub
-	UsingUART = NO_UART;
+	EnableModulation = ENABLE_MODULATION;
+	pulseDir = PULSE_STOP;
 	tick = 0;
+
+	UsingUART = NO_UART;
 }
 /*
  * Private methods
@@ -162,13 +165,17 @@ void AnalogGMSK::Start(InputPorts_t inputPorts, OutputPorts_t outputPorts, DAC_H
 
 void AnalogGMSK::Tick(void)
 {
-	if(pulseDir == PULSE_RISING_EDGE)
+	if((pulseDir == PULSE_RISING_EDGE) && (EnableModulation == ENABLE_MODULATION))
 	{
 		ModulateRisingEdge();
 	}
-	else if(pulseDir == PULSE_FALLING_EDGE)
+	else if((pulseDir == PULSE_FALLING_EDGE)  && (EnableModulation == ENABLE_MODULATION))
 	{
 		ModulateFallingEdge();
+	}
+	else if(EnableModulation == DISABLE_MODULATION)
+	{
+		pulseDir = PULSE_STOP;
 	}
 }
 
@@ -186,6 +193,16 @@ void AnalogGMSK::SetPulseFalling(void)
 
 	pulseDir = PULSE_FALLING_EDGE;
 	tick = SAMPLE_PER_SYMBOL;
+}
+
+void AnalogGMSK::StartModulate(void)
+{
+	EnableModulation = ENABLE_MODULATION;
+}
+
+void AnalogGMSK::StopModulate(void)
+{
+	EnableModulation = DISABLE_MODULATION;
 }
 
 AnalogGMSK::~AnalogGMSK() {
